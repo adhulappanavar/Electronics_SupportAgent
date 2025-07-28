@@ -1,0 +1,29 @@
+
+# Samsung TV Standard Operating Procedure
+
+## Initial Setup Procedure
+1. Unpack the TV from the box carefully
+2. Attach the stand or mount to wall bracket
+3. Connect power cable to outlet
+4. Press power button on remote or TV
+5. Follow on-screen setup wizard
+6. Connect to WiFi network
+7. Update firmware if prompted
+8. Complete channel scan for cable/antenna
+
+## Daily Operation
+- Use Samsung Smart Remote for navigation
+- Voice control available with Bixby
+- SmartThings app integration for mobile control
+- Gaming mode available for reduced input lag
+
+## Maintenance Schedule
+- Clean screen weekly with microfiber cloth
+- Check for software updates monthly
+- Inspect cables quarterly
+- Professional service annually
+
+## Error Code Reference
+- Error 001: Network connection issue
+- Error 012: Software update failure
+- Error 105: HDMI connection problem

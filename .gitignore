@@ -1,0 +1,288 @@
+# =============================================================================
+# Electronics_SupportAgent - Comprehensive .gitignore
+# =============================================================================
+
+# =============================================================================
+# CRITICAL: ENVIRONMENT VARIABLES (MUST BE EXCLUDED)
+# =============================================================================
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+*.env
+n8n/.env
+n8n/.env.*
+
+# =============================================================================
+# Python
+# =============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# =============================================================================
+# Database Files
+# =============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.lancedb
+*.kuzu
+manual_knowledge_db/
+lancedb_data/
+feedback_data/
+
+# =============================================================================
+# Logs and Temporary Files
+# =============================================================================
+*.log
+logs/
+*.tmp
+*.temp
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =============================================================================
+# IDE and Editor Files
+# =============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# Node.js (for n8n)
+# =============================================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+.pnp.*
+
+# =============================================================================
+# n8n Specific
+# =============================================================================
+n8n/.n8n/
+n8n/workflows/
+n8n/credentials/
+n8n/data/
+n8n/logs/
+
+# =============================================================================
+# AI/ML Model Files
+# =============================================================================
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.model
+*.bin
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.pb
+
+# =============================================================================
+# Vector Database Files
+# =============================================================================
+*.faiss
+*.index
+*.vec
+*.emb
+*.vector
+
+# =============================================================================
+# Documentation Build
+# =============================================================================
+docs/_build/
+docs/build/
+site/
+
+# =============================================================================
+# OS Generated Files
+# =============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =============================================================================
+# Backup Files
+# =============================================================================
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+
+# =============================================================================
+# Test Output
+# =============================================================================
+test_output/
+test_results/
+*.test
+*.test.*
+
+# =============================================================================
+# Configuration Files (Sensitive)
+# =============================================================================
+config.ini
+secrets.json
+credentials.json
+api_keys.json
+*.key
+*.pem
+*.p12
+*.pfx
+
+# =============================================================================
+# Large Files
+# =============================================================================
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.iso
+*.dmg
+*.pkg
+
+# =============================================================================
+# Project Specific
+# =============================================================================
+# Cognee specific files
+.cognee_system/
+cognee_db/
+cognee_graph_*
+
+# LanceDB specific
+*.lancedb/
+lancedb/
+
+# Kuzu specific
+kuzu_db/
+*.kuzu/
+
+# Sample data (if contains sensitive info)
+sample_data/sensitive/
+sample_data/private/
+
+# =============================================================================
+# Temporary and Cache
+# =============================================================================
+.cache/
+tmp/
+temp/
+*.cache
+
+# =============================================================================
+# Security
+# =============================================================================
+# Additional security measures
+*.key
+*.pem
+*.crt
+*.csr
+*.p12
+*.pfx
+secrets/
+private/ 

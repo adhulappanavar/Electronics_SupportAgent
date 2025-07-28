@@ -1,0 +1,34 @@
+
+# Samsung TV Frequently Asked Questions
+
+## Q: How do I connect my Samsung TV to WiFi?
+A: Go to Settings > Network > Open Network Settings. Select your WiFi network and enter password. The TV will automatically connect.
+
+## Q: Why is my Samsung TV not turning on?
+A: Check these steps:
+1. Ensure power cable is properly connected
+2. Try different power outlet
+3. Check if power LED is lit
+4. Replace remote batteries
+5. Contact support if issue persists
+
+## Q: How do I update my Samsung TV software?
+A: Go to Settings > Support > Software Update > Update Now. Ensure stable internet connection during update.
+
+## Q: My Samsung TV picture is blurry, what should I do?
+A: 
+1. Check input source quality
+2. Adjust picture settings in Settings > Picture
+3. Ensure proper viewing distance
+4. Check cable connections
+5. Reset picture settings to default
+
+## Q: How do I use Samsung SmartThings with my TV?
+A: Download SmartThings app, ensure TV and phone are on same network, tap "Add Device" and follow instructions.
+
+## Q: What gaming features are available?
+A: Samsung TVs support:
+- Game Mode for reduced input lag
+- Variable Refresh Rate (VRR)
+- Auto Low Latency Mode (ALLM)
+- FreeSync Premium for smooth gaming

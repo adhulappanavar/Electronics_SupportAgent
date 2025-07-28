@@ -1,0 +1,43 @@
+
+# Samsung Speaker User Manual
+
+## Package Contents
+- Samsung Speaker
+- Power adapter
+- Audio cable (3.5mm)
+- Quick setup guide
+- Warranty information
+
+## Setup Instructions
+1. Connect power adapter to speaker
+2. Press and hold power button for 3 seconds
+3. Speaker will enter pairing mode (blue LED flashing)
+4. On your device, enable Bluetooth
+5. Select "Samsung Speaker" from available devices
+6. LED will turn solid blue when connected
+
+## Controls
+- Power: Long press power button
+- Play/Pause: Single press power button
+- Volume: Use + and - buttons
+- Skip tracks: Double/triple press power button
+- Bluetooth pairing: Hold power + volume up
+
+## Connectivity Options
+- Bluetooth 5.0 (primary)
+- 3.5mm auxiliary input
+- USB-C for charging/audio
+- Wi-Fi for Samsung SmartThings integration
+
+## Specifications
+- Frequency response: 20Hz - 20kHz
+- Battery life: Up to 12 hours
+- Charging time: 3 hours
+- Bluetooth range: 30 feet
+- Water resistance: IPX5 rated
+
+## Troubleshooting
+- No sound: Check volume levels and connections
+- Won't pair: Clear Bluetooth cache, restart devices
+- Poor audio quality: Move closer to source device
+- Won't charge: Check charging cable and port

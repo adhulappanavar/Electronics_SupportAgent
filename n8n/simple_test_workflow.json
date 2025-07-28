@@ -1,0 +1,110 @@
+{
+    "name": "Simple LanceDB Test Workflow",
+    "active": true,
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "test_lancedb",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        },
+        "id": "1",
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [240, 300]
+      },
+      {
+        "parameters": {
+          "functionCode": "// Extract query from webhook\nconst query = String($json.body?.query || $json.query || 'test query').trim();\n\nif (!query) {\n  throw new Error('Query is required');\n}\n\nreturn [{ json: { question: query }}];"
+        },
+        "id": "2",
+        "name": "Extract Query",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [460, 300]
+      },
+      {
+        "parameters": {
+          "url": "http://127.0.0.1:8000/manual_search",
+          "method": "POST",
+          "jsonParameters": true,
+          "sendBody": true,
+          "bodyParametersJson": "={\"question\":\"{{$json[\"question\"]}}\"}",
+          "options": {
+            "timeout": 10000
+          }
+        },
+        "id": "3",
+        "name": "LanceDB Search",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [680, 300]
+      },
+      {
+        "parameters": {
+          "functionCode": "// Format response\nreturn [{\n  json: {\n    success: true,\n    query: $json.question || 'unknown',\n    lancedb_response: $json,\n    timestamp: new Date().toISOString()\n  }\n}];"
+        },
+        "id": "4",
+        "name": "Format Response",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [900, 300]
+      },
+      {
+        "parameters": {},
+        "id": "5",
+        "name": "Return Result",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [1120, 300]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Extract Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Query": {
+        "main": [
+          [
+            {
+              "node": "LanceDB Search",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "LanceDB Search": {
+        "main": [
+          [
+            {
+              "node": "Format Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format Response": {
+        "main": [
+          [
+            {
+              "node": "Return Result",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    }
+  } 

@@ -1,0 +1,261 @@
+{
+    "name": "Cognee Enhanced RAG System - Complete Workflow",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "cognee_rag_query",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        },
+        "id": "1",
+        "name": "Webhook (User Query Entry)",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [250, 300]
+      },
+              {
+          "parameters": {
+            "functionCode": "// Extract and validate query\nconst rawQuery = $json.body?.query || $json.query || '';\nconst query = String(rawQuery).trim();\nif (!query || query === 'undefined' || query === 'null') {\n  throw new Error('Query is required and must be a valid string');\n}\nreturn [{ json: { query: query, timestamp: new Date().toISOString() }}];"
+          },
+          "id": "2",
+          "name": "Extract & Validate Query",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [500, 300]
+        },
+      {
+        "parameters": {
+          "url": "http://localhost:8000/manual_search",
+          "method": "POST",
+          "jsonParameters": true,
+          "sendBody": true,
+          "bodyParametersJson": "={\"question\":\"{{$json[\"query\"]}}\"}",
+          "options": {
+            "timeout": 10000
+          }
+        },
+        "id": "3",
+        "name": "Manual Knowledge Search (Priority)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [750, 250]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{$json[\"found\"]}}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equal"
+                }
+              },
+              {
+                "leftValue": "={{$json[\"confidence\"]}}",
+                "rightValue": 0.7,
+                "operator": {
+                  "type": "number",
+                  "operation": "gte"
+                }
+              }
+            ],
+            "combineOperation": "all"
+          }
+        },
+        "id": "4",
+        "name": "High Confidence Manual Solution?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [1000, 250]
+      },
+      {
+        "parameters": {
+          "url": "http://localhost:9000/cognee_query",
+          "method": "POST",
+          "jsonParameters": true,
+          "sendBody": true,
+          "bodyParametersJson": "={\"question\":\"{{$json[\"query\"]}}\",\"context\":{\"brand\":\"\",\"product_category\":\"\"}}",
+          "options": {
+            "timeout": 15000
+          }
+        },
+        "id": "5",
+        "name": "Cognee AI Memory Search",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [1250, 400]
+      },
+              {
+          "parameters": {
+            "functionCode": "// Intelligent Answer Combination\nconst manual = String($json.manual_answer || $json.answer || '').trim();\nconst cognee = String($json.cognee_answer || $json.answer || '').trim();\nconst query = String($json.query || '').trim();\n\nlet final_answer = '';\nlet source = '';\nlet confidence = 0;\n\n// Check manual knowledge first (highest priority)\nconst manual_confidence = parseFloat($json.manual_confidence || $json.confidence || 0);\nif (manual && manual_confidence > 0.7) {\n  final_answer = manual;\n  source = 'manual_knowledge';\n  confidence = manual_confidence;\n} else if (cognee) {\n  final_answer = cognee;\n  source = 'cognee_ai_memory';\n  confidence = parseFloat($json.cognee_confidence || 0.6);\n} else {\n  final_answer = 'I apologize, but I could not find a suitable answer to your question. Please try rephrasing or contact support.';\n  source = 'fallback';\n  confidence = 0.1;\n}\n\nreturn [{\n  json: {\n    query: query,\n    final_answer: final_answer,\n    source: source,\n    confidence: confidence,\n    timestamp: new Date().toISOString(),\n    manual_answer: manual,\n    cognee_answer: cognee,\n    manual_confidence: manual_confidence\n  }\n}];"
+          },
+          "id": "6",
+          "name": "Intelligent Answer Combination",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [1500, 300]
+        },
+      {
+        "parameters": {
+          "url": "http://localhost:8000/validate_answer",
+          "method": "POST",
+          "jsonParameters": true,
+          "sendBody": true,
+          "bodyParametersJson": "={\"question\":\"{{$json[\"query\"]}}\",\"answer\":\"{{$json[\"final_answer\"]}}\",\"source\":\"{{$json[\"source\"]}}\"}",
+          "options": {
+            "timeout": 10000
+          }
+        },
+        "id": "7",
+        "name": "Answer Validation",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [1750, 300]
+      },
+              {
+          "parameters": {
+            "functionCode": "// Prepare final response with all metadata\nconst startTime = $json.timestamp ? new Date($json.timestamp).getTime() : Date.now();\nconst processingTime = Date.now() - startTime;\n\nreturn [{\n  json: {\n    success: true,\n    query: String($json.query || ''),\n    answer: String($json.final_answer || ''),\n    source: String($json.source || 'unknown'),\n    confidence: parseFloat($json.confidence || 0),\n    validation: $json.validation || null,\n    timestamp: $json.timestamp || new Date().toISOString(),\n    metadata: {\n      processing_time_ms: processingTime,\n      version: 'cognee_enhanced_v1.0',\n      manual_answer: String($json.manual_answer || ''),\n      cognee_answer: String($json.cognee_answer || ''),\n      manual_confidence: parseFloat($json.manual_confidence || 0)\n    }\n  }\n}];"
+          },
+          "id": "8",
+          "name": "Format Final Response",
+          "type": "n8n-nodes-base.function",
+          "typeVersion": 1,
+          "position": [2000, 300]
+        },
+      {
+        "parameters": {},
+        "id": "9",
+        "name": "Return Response to User",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [2250, 300]
+      },
+      {
+        "parameters": {
+          "url": "http://localhost:8000/log_interaction",
+          "method": "POST",
+          "jsonParameters": true,
+          "sendBody": true,
+          "bodyParametersJson": "={\"query\":\"{{$json[\"query\"]}}\",\"answer\":\"{{$json[\"final_answer\"]}}\",\"source\":\"{{$json[\"source\"]}}\",\"confidence\":\"{{$json[\"confidence\"]}}\",\"timestamp\":\"{{$json[\"timestamp\"]}}\"}",
+          "options": {
+            "timeout": 5000
+          }
+        },
+        "id": "10",
+        "name": "Log Interaction (Analytics)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [2000, 500]
+      }
+    ],
+    "connections": {
+      "Webhook (User Query Entry)": {
+        "main": [
+          [
+            {
+              "node": "Extract & Validate Query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract & Validate Query": {
+        "main": [
+          [
+            {
+              "node": "Manual Knowledge Search (Priority)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Manual Knowledge Search (Priority)": {
+        "main": [
+          [
+            {
+              "node": "High Confidence Manual Solution?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "High Confidence Manual Solution?": {
+        "main": [
+          [
+            {
+              "node": "Intelligent Answer Combination",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Cognee AI Memory Search",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cognee AI Memory Search": {
+        "main": [
+          [
+            {
+              "node": "Intelligent Answer Combination",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Intelligent Answer Combination": {
+        "main": [
+          [
+            {
+              "node": "Answer Validation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Answer Validation": {
+        "main": [
+          [
+            {
+              "node": "Format Final Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format Final Response": {
+        "main": [
+          [
+            {
+              "node": "Return Response to User",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Log Interaction (Analytics)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    }
+  }

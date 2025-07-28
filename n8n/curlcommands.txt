@@ -1,0 +1,78 @@
+# Enhanced n8n RAG System - Test Commands
+
+# 1. Test the complete n8n workflow (replace with your actual webhook URL)
+curl -X POST "https://akdhulappa.app.n8n.cloud/webhook-test/75d03de2-75bd-4026-8e87-08aadf8c4f48" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "query": "Samsung TV won't turn on after power outage"
+     }'
+
+# 2. Test manual knowledge addition (for feedback loop)
+curl -X POST "http://localhost:8000/add_manual_knowledge" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "question": "Samsung TV won't turn on after power outage",
+       "answer": "1. Check power outlet and surge protector. 2. Unplug TV for 60 seconds. 3. Hold power button for 10 seconds while unplugged. 4. Plug back in and try turning on.",
+       "confidence_score": 0.9,
+       "brand": "Samsung",
+       "product_category": "TV",
+       "tags": ["power_issue", "troubleshooting", "verified"]
+     }'
+
+# 3. Test LanceDB manual search directly
+curl -X POST "http://localhost:8000/manual_search" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "question": "TV not working"
+     }'
+
+# 4. Test Cognee service directly
+curl -X POST "http://localhost:9000/cognee_query" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "question": "How to fix Samsung TV power issues?",
+       "context": {
+         "brand": "Samsung",
+         "product_category": "TV"
+       }
+     }'
+
+# 5. Health checks
+curl -X GET "http://localhost:8000/health"
+curl -X GET "http://localhost:9000/health"
+curl -X GET "http://localhost:8000/stats"
+curl -X GET "http://localhost:9000/status"
+
+# 6. Test validation endpoint
+curl -X POST "http://localhost:8000/validate_answer" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "question": "TV won't turn on",
+       "answer": "Check the power outlet and ensure the TV is properly plugged in. Try unplugging for 30 seconds.",
+       "source": "manual_knowledge"
+     }'
+
+# 7. Complex workflow test with multiple queries
+curl -X POST "https://akdhulappa.app.n8n.cloud/webhook-test/75d03de2-75bd-4026-8e87-08aadf8c4f48" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "query": "LG refrigerator not cooling properly"
+     }'
+
+curl -X POST "https://akdhulappa.app.n8n.cloud/webhook-test/75d03de2-75bd-4026-8e87-08aadf8c4f48" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "query": "Washing machine making loud noise during spin cycle"
+     }'
+
+# 8. Test error handling
+curl -X POST "https://akdhulappa.app.n8n.cloud/webhook-test/75d03de2-75bd-4026-8e87-08aadf8c4f48" \
+     -H "Content-Type: application/json" \
+     -d '{}'
+
+# 9. Start services commands (run these in separate terminals)
+# Terminal 1: python n8n/lance_code.py
+# Terminal 2: python n8n/congnee_code.py
+# Terminal 3: Test the n8n workflow
+
+

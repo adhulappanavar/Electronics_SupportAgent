@@ -1,0 +1,41 @@
+
+# LG Washing Machine Frequently Asked Questions
+
+## Q: Why is my LG washer not spinning?
+A: Common causes:
+1. Unbalanced load - redistribute clothes evenly
+2. Overloaded machine - remove some items
+3. Door not properly closed - ensure secure closure
+4. Clogged drain filter - clean filter
+5. Contact service if problem persists
+
+## Q: How much detergent should I use?
+A: Use HE (High Efficiency) detergent only. Amount depends on load size:
+- Small load: 1 tablespoon
+- Medium load: 2 tablespoons  
+- Large load: 3 tablespoons
+- Heavily soiled: Add extra tablespoon
+
+## Q: What do the error codes mean?
+A: Common LG washer error codes:
+- IE: Water inlet error - check water supply
+- OE: Drain error - check drain hose/filter
+- UE: Unbalanced load - redistribute clothes
+- LE: Motor error - contact service
+- PE: Water level sensor error - contact service
+
+## Q: How do I clean my LG washer?
+A: Run monthly cleaning cycle:
+1. Remove all clothes
+2. Add washing machine cleaner or 2 cups white vinegar
+3. Run "Tub Clean" cycle
+4. Wipe drum and door seal
+5. Leave door open to air dry
+
+## Q: Why are my clothes still wet after wash cycle?
+A: Check:
+1. Proper spin cycle selected
+2. Balanced load distribution
+3. Drain hose not kinked
+4. Clean drain filter
+5. Washer level and stable
