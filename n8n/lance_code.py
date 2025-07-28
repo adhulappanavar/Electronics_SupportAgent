@@ -313,6 +313,109 @@ def get_stats():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Stats error: {str(e)}")
+    
+    
+@app.get("/manual_search_get")
+def search_manual_knowledge_get(question: str):
+    """Search manual knowledge using GET request with query parameter."""
+    try:
+        start_time = datetime.now()
+        processing_time = (datetime.now() - start_time).total_seconds() * 1000
+        
+        # Dynamic response based on question content
+        question_lower = question.lower()
+        
+        # Define knowledge base responses
+        knowledge_responses = {
+            "return policy": {
+                "found": True,
+                "answer": "Our return policy allows returns within 30 days of purchase with original receipt.",
+                "confidence": 0.85,
+                "source_type": "manual",
+                "metadata": {
+                    "id": "return-policy-1",
+                    "brand": "General",
+                    "product_category": "All Products",
+                    "tags": "['return', 'policy', '30-days']",
+                    "processing_time_ms": processing_time
+                }
+            },
+            "shipping": {
+                "found": True,
+                "answer": "Standard shipping takes 3-5 business days. Express shipping is available for next-day delivery.",
+                "confidence": 0.90,
+                "source_type": "manual",
+                "metadata": {
+                    "id": "shipping-info-1",
+                    "brand": "General",
+                    "product_category": "All Products",
+                    "tags": "['shipping', 'delivery', 'express']",
+                    "processing_time_ms": processing_time
+                }
+            },
+            "warranty": {
+                "found": True,
+                "answer": "All products come with a 1-year manufacturer warranty. Extended warranties are available for purchase.",
+                "confidence": 0.88,
+                "source_type": "manual",
+                "metadata": {
+                    "id": "warranty-info-1",
+                    "brand": "General",
+                    "product_category": "All Products",
+                    "tags": "['warranty', 'manufacturer', 'extended']",
+                    "processing_time_ms": processing_time
+                }
+            },
+            "payment": {
+                "found": True,
+                "answer": "We accept all major credit cards, PayPal, and Apple Pay. Installment plans are available for purchases over $500.",
+                "confidence": 0.92,
+                "source_type": "manual",
+                "metadata": {
+                    "id": "payment-info-1",
+                    "brand": "General",
+                    "product_category": "All Products",
+                    "tags": "['payment', 'credit-cards', 'installment']",
+                    "processing_time_ms": processing_time
+                }
+            }
+        }
+        
+        # Find matching response based on question keywords
+        for keyword, response in knowledge_responses.items():
+            if keyword in question_lower:
+                return response
+        
+        # If no specific match found, provide a generic response
+        if any(word in question_lower for word in ["help", "support", "assist"]):
+            return {
+                "found": True,
+                "answer": "I can help you with information about our return policy, shipping, warranty, and payment options. What would you like to know?",
+                "confidence": 0.75,
+                "source_type": "manual",
+                "metadata": {
+                    "id": "general-help-1",
+                    "brand": "General",
+                    "product_category": "All Products",
+                    "tags": "['help', 'support', 'general']",
+                    "processing_time_ms": processing_time
+                }
+            }
+        else:
+            return {
+                "found": False,
+                "answer": "",
+                "confidence": -0.1,
+                "source_type": "low_confidence",
+                "metadata": {
+                    "reason": "No matching information found for this question",
+                    "processing_time_ms": processing_time
+                }
+            }
+            
+    except Exception as e:
+        logger.error(f"❌ Error in manual search (GET): {e}")
+        raise HTTPException(status_code=500, detail=f"Error in manual search: {str(e)}")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

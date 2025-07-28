@@ -27,7 +27,7 @@
       {
         "parameters": {
           "url": "http://localhost:8000/manual_search",
-          "method": "POST",
+          "method": "GET",
           "jsonParameters": true,
           "sendBody": true,
           "bodyParametersJson": "={\"question\":\"{{$json[\"query\"]}}\"}",
