@@ -22,6 +22,12 @@ Electronics_SupportAgent is an intelligent support system designed for companies
 User Query → Manual Knowledge (Priority) → Cognee AI Memory → OpenAI Generation → Validation → Response
 ```
 
+### System Architecture Diagram
+
+![Cognee Sequence Diagram](Cognee_SequenceDiagram.svg)
+
+*Detailed sequence diagram showing the complete flow of document processing with `cognee.add()` and intelligent query processing. The diagram illustrates how documents are processed into Cognee's AI memory system, creating knowledge graphs and semantic understanding for intelligent responses.*
+
 ## 🚀 Features
 
 ### 🤖 AI-Powered Support
